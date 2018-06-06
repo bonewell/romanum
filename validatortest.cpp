@@ -2,18 +2,21 @@
 #include <gmock/gmock-matchers.h>
 
 #include <array>
+#include <algorithm>
 
 using namespace testing;
 
 bool validate(const std::string& value) {
-    const std::array<const char, 7> kDigits{'I', 'V', 'X', 'L', 'C', 'D', 'M'};
-    if (value.length() == 1) {
-        return std::find(std::begin(kDigits), std::end(kDigits), value[0]) != std::end(kDigits);
+    const std::array<char, 7> kDigits{'I', 'V', 'X', 'L', 'C', 'D', 'M'};
+
+    if (value.length() > 0) {
+        return std::any_of(std::begin(kDigits), std::end(kDigits),
+                           [&value](char item) { return value[0] == item; });
     }
     return false;
 }
 
-TEST(ValidatorTest, IsValidDigit)
+TEST(ValidatorTest, TheFirstDigitIsValid)
 {
     ASSERT_TRUE(validate("I"));
     ASSERT_TRUE(validate("V"));
@@ -24,6 +27,6 @@ TEST(ValidatorTest, IsValidDigit)
     ASSERT_TRUE(validate("M"));
 }
 
-TEST(ValidatorTest, IsValidAllDigits) {
-    ASSERT_TRUE(validate("CIX"));
+TEST(ValidatorTest, EmptyValueIsInvalid) {
+    ASSERT_FALSE(validate(""));
 }

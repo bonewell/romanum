@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.5)
 project(ValidatorTest)
+set(CXX_STANDARD 17)
 
-set(GTEST_ROOT /home/kkolodiy/git/google/googletest/build/bin)
+set(GTEST_ROOT /home/bone/git/googletest/build/bin)
 
 enable_testing()
 find_package(GTest REQUIRED)
 
 add_executable(${PROJECT_NAME}
-    tst_validatortest.cpp
+    validatortest.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

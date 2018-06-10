@@ -8,6 +8,7 @@ enable_testing()
 find_package(GTest REQUIRED)
 
 add_executable(${PROJECT_NAME}
+    validator.cpp
     validatortest.cpp
 )
 

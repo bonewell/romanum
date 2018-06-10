@@ -1,55 +1,9 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
 
-#include <array>
-#include <algorithm>
+#include "validator.h"
 
 using namespace testing;
-
-static const std::array<char, 7> kDigits{'I', 'V', 'X', 'L', 'C', 'D', 'M'};
-static const std::array<char, 5> kIVXLC{'I', 'V', 'X', 'L', 'C'};
-static const std::array<char, 3> kIVX{'I', 'V', 'X'};
-static const std::array<char, 1> kI{'I'};
-
-class Validator {
-public:
-    bool Validate(const std::string& value) {
-        if (value.empty()) { return false; }
-        Reset();
-        for (auto digit: value) {
-            if (!Check(digit)) return false;
-        }
-        return true;
-    }
-
-private:
-    std::vector<char> digits;
-
-    void Reset() {
-        digits.assign(std::begin(kDigits), std::end(kDigits));
-    }
-
-    void Update(char currentDigit) {
-        switch (currentDigit) {
-        case 'I': digits.assign(std::begin(kIVX), std::end(kIVX)); break;
-        case 'V':
-        case 'L': digits.assign(std::begin(kI), std::end(kI)); break;
-        case 'X':
-        case 'D': digits.assign(std::begin(kIVXLC), std::end(kIVXLC)); break;
-        }
-    }
-
-    bool Check(char currentDigit) {
-        if (std::any_of(std::begin(digits), std::end(digits),
-                           [currentDigit](char item) {
-                        return currentDigit == item; }
-                        )) {
-                Update(currentDigit);
-                return true;
-        }
-        return false;
-    }
-};
 
 class ValidatorTest : public Test {
 public:
@@ -113,7 +67,7 @@ TEST_F(ValidatorTest, ADigitAfterCMayBeAny) {
     ASSERT_TRUE(validator.Validate("CM"));
 }
 
-TEST_F(ValidatorTest, ADigitAfterDShouldNotBeDM) {
+TEST_F(ValidatorTest, ADigitAfterDShouldNotBeDOrM) {
     ASSERT_FALSE(validator.Validate("DD"));
     ASSERT_FALSE(validator.Validate("DM"));
 }
@@ -126,4 +80,9 @@ TEST_F(ValidatorTest, ADigitAfterMMayBeAny) {
     ASSERT_TRUE(validator.Validate("MC"));
     ASSERT_TRUE(validator.Validate("MD"));
     ASSERT_TRUE(validator.Validate("MM"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterIIShouldNotBeVOrX) {
+    ASSERT_FALSE(validator.Validate("IIV"));
+    ASSERT_FALSE(validator.Validate("IIX"));
 }

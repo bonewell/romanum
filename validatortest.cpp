@@ -34,7 +34,8 @@ private:
         case 'I': digits.assign(std::begin(kIVX), std::end(kIVX)); break;
         case 'V':
         case 'L': digits.assign(std::begin(kI), std::end(kI)); break;
-        case 'X': digits.assign(std::begin(kIVXLC), std::end(kIVXLC)); break;
+        case 'X':
+        case 'D': digits.assign(std::begin(kIVXLC), std::end(kIVXLC)); break;
         }
     }
 
@@ -100,4 +101,29 @@ TEST_F(ValidatorTest, ADigitAfterLShouldNotBeLCDOrM) {
     ASSERT_FALSE(validator.Validate("LC"));
     ASSERT_FALSE(validator.Validate("LD"));
     ASSERT_FALSE(validator.Validate("LM"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterCMayBeAny) {
+    ASSERT_TRUE(validator.Validate("CI"));
+    ASSERT_TRUE(validator.Validate("CV"));
+    ASSERT_TRUE(validator.Validate("CX"));
+    ASSERT_TRUE(validator.Validate("CL"));
+    ASSERT_TRUE(validator.Validate("CC"));
+    ASSERT_TRUE(validator.Validate("CD"));
+    ASSERT_TRUE(validator.Validate("CM"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterDShouldNotBeDM) {
+    ASSERT_FALSE(validator.Validate("DD"));
+    ASSERT_FALSE(validator.Validate("DM"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterMMayBeAny) {
+    ASSERT_TRUE(validator.Validate("MI"));
+    ASSERT_TRUE(validator.Validate("MV"));
+    ASSERT_TRUE(validator.Validate("MX"));
+    ASSERT_TRUE(validator.Validate("ML"));
+    ASSERT_TRUE(validator.Validate("MC"));
+    ASSERT_TRUE(validator.Validate("MD"));
+    ASSERT_TRUE(validator.Validate("MM"));
 }

@@ -5,6 +5,7 @@ namespace {
   const std::array<char, 5> kIVXLC{'I', 'V', 'X', 'L', 'C'};
   const std::array<char, 3> kIVX{'I', 'V', 'X'};
   const std::array<char, 1> kI{'I'};
+  const std::array<char, 0> kNone;
 }
 
 bool Validator::Validate(const std::string& value) {
@@ -26,23 +27,45 @@ void Validator::SetDigits(const std::array<char, N> &digits)
 void Validator::Reset() {
     SetDigits(kDigits);
     preDigit_ = 0;
+    prePreDigit_ = 0;
 }
 
 void Validator::UpdateForI() {
     switch (preDigit_) {
-        case 'I': SetDigits(kI); break;
+        case 'I':
+        case 'V':
+            if (prePreDigit_ == 'I')
+                SetDigits(kNone);
+            else
+                SetDigits(kI);
+        break;
         default: SetDigits(kIVX);
+    }
+}
+
+void Validator::UpdateForV() {
+    switch (preDigit_) {
+        case 'I': SetDigits(kNone); break;
+        default: SetDigits(kI);
+    }
+}
+
+void Validator::UpdateForX() {
+    switch (preDigit_) {
+        case 'I': SetDigits(kNone); break;
+        default: SetDigits(kIVXLC);
     }
 }
 
 void Validator::Update(char currentDigit) {
     switch (currentDigit) {
         case 'I': UpdateForI(); break;
-        case 'V':
+        case 'V': UpdateForV(); break;
         case 'L': SetDigits(kI); break;
-        case 'X':
+        case 'X': UpdateForX(); break;
         case 'D': SetDigits(kIVXLC); break;
     }
+    prePreDigit_ = preDigit_;
     preDigit_ = currentDigit;
 }
 

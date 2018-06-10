@@ -12,12 +12,15 @@ public:
 private:
     std::vector<char> digits_;
     char preDigit_;
+    char prePreDigit_;
 
     template<size_t N>
     void SetDigits(const std::array<char, N>& digits);
     void Reset();
     void Update(char currentDigit);
     void UpdateForI();
+    void UpdateForV();
+    void UpdateForX();
     bool Check(char currentDigit) const;
 };
 

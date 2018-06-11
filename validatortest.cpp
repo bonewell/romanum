@@ -91,13 +91,13 @@ TEST_F(ValidatorTest, NoDigitsAfterIII) {
     ASSERT_FALSE(validator.Validate("IIII"));
 }
 
+TEST_F(ValidatorTest, NoDigitAfterIV) {
+    ASSERT_FALSE(validator.Validate("IVI"));
+}
+
 TEST_F(ValidatorTest, ADigitAfterVIShouldNotBeVOrX) {
     ASSERT_FALSE(validator.Validate("VIV"));
     ASSERT_FALSE(validator.Validate("VIX"));
-}
-
-TEST_F(ValidatorTest, NoDigitAfterIV) {
-    ASSERT_FALSE(validator.Validate("IVI"));
 }
 
 TEST_F(ValidatorTest, NoDigitAfterIX) {
@@ -125,4 +125,22 @@ TEST_F(ValidatorTest, NumbersFromIToXXAreValid) {
     ASSERT_TRUE(validator.Validate("XVIII"));
     ASSERT_TRUE(validator.Validate("XIX"));
     ASSERT_TRUE(validator.Validate("XX"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterXXShouldNotBeLOrC) {
+    ASSERT_FALSE(validator.Validate("XXL"));
+    ASSERT_FALSE(validator.Validate("XXC"));
+}
+
+TEST_F(ValidatorTest, ADigitsAfterXXXShoudNotBeX) {
+    ASSERT_FALSE(validator.Validate("XXXX"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterXLShouldNotBeX) {
+    ASSERT_FALSE(validator.Validate("XLX"));
+}
+
+TEST_F(ValidatorTest, DISABLED_ADigitAfterLXShouldNotBeVOrX) {
+    ASSERT_FALSE(validator.Validate("LXL"));
+    ASSERT_FALSE(validator.Validate("LXC"));
 }

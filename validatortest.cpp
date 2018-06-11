@@ -140,7 +140,11 @@ TEST_F(ValidatorTest, ADigitAfterXLShouldNotBeX) {
     ASSERT_FALSE(validator.Validate("XLX"));
 }
 
-TEST_F(ValidatorTest, DISABLED_ADigitAfterLXShouldNotBeVOrX) {
+TEST_F(ValidatorTest, ADigitAfterLXShouldNotBeLOrC) {
     ASSERT_FALSE(validator.Validate("LXL"));
     ASSERT_FALSE(validator.Validate("LXC"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterXCShouldNotBeX) {
+    ASSERT_FALSE(validator.Validate("XCX"));
 }

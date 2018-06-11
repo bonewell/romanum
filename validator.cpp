@@ -1,7 +1,7 @@
 #include "validator.h"
 
 namespace {
-  const std::array<char, 7> kDigits{'I', 'V', 'X', 'L', 'C', 'D', 'M'};
+  const std::array<char, 7> kIVXLCDM{'I', 'V', 'X', 'L', 'C', 'D', 'M'};
   const std::array<char, 5> kIVXLC{'I', 'V', 'X', 'L', 'C'};
   const std::array<char, 3> kIVX{'I', 'V', 'X'};
   const std::array<char, 2> kIV{'I', 'V'};
@@ -26,7 +26,7 @@ void Validator::SetDigits(const std::array<char, N> &digits)
 }
 
 void Validator::Reset() {
-    SetDigits(kDigits);
+    SetDigits(kIVXLCDM);
     preDigit_ = 0;
     prePreDigit_ = 0;
 }
@@ -60,6 +60,7 @@ void Validator::UpdateForX() {
             else
                 SetDigits(kIVX);
         break;
+        case 'L': SetDigits(kIVX); break;
         default: SetDigits(kIVXLC);
     }
 }
@@ -72,12 +73,21 @@ void Validator::UpdateForL()
     }
 }
 
+void Validator::UpdateForC()
+{
+    switch (preDigit_) {
+        case 'X': SetDigits(kIV); break;
+        default: SetDigits(kIVXLCDM); break;
+    }
+}
+
 void Validator::Update(char currentDigit) {
     switch (currentDigit) {
         case 'I': UpdateForI(); break;
         case 'V': UpdateForV(); break;
         case 'X': UpdateForX(); break;
         case 'L': UpdateForL(); break;
+        case 'C': UpdateForC(); break;
         case 'D': SetDigits(kIVXLC); break;
     }
     prePreDigit_ = preDigit_;

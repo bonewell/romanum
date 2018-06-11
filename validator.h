@@ -22,6 +22,7 @@ private:
     void UpdateForV();
     void UpdateForX();
     void UpdateForL();
+    void UpdateForC();
     bool Check(char currentDigit) const;
 };
 

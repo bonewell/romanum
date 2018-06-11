@@ -5,20 +5,23 @@
 #include <algorithm>
 #include <vector>
 
+#include "romannumber.h"
+
+class RomanNumber;
+
 class Validator {
 public:
     bool Validate(const std::string& value);
 
 private:
+    RomanNumber number_;
     std::vector<char> digits_;
-    char preDigit_;
-    char prePreDigit_;
 
     template<size_t N>
     void SetDigits(const std::array<char, N>& digits);
+    void SetDigits(const std::string& digits);
     void Reset();
     void Update(char currentDigit);
-    void UpdateForI();
     void UpdateForV();
     void UpdateForX();
     void UpdateForL();

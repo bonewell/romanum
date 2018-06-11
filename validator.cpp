@@ -21,6 +21,11 @@ bool Validator::Validate(const std::string& value) {
     return true;
 }
 
+void Validator::SetDigits(const std::string& digits)
+{
+    digits_.assign(std::begin(digits), std::end(digits));
+}
+
 template<size_t N>
 void Validator::SetDigits(const std::array<char, N> &digits)
 {
@@ -29,35 +34,21 @@ void Validator::SetDigits(const std::array<char, N> &digits)
 
 void Validator::Reset() {
     SetDigits(kIVXLCDM);
-    preDigit_ = 0;
-    prePreDigit_ = 0;
-}
-
-void Validator::UpdateForI() {
-    switch (preDigit_) {
-        case 'I':
-        case 'V':
-            if (prePreDigit_ == 'I')
-                SetDigits(kNone);
-            else
-                SetDigits(kI);
-        break;
-        default: SetDigits(kIVX);
-    }
+    number_ = RomanNumber();
 }
 
 void Validator::UpdateForV() {
-    switch (preDigit_) {
+    switch (number_.preDigit()) {
         case 'I': SetDigits(kNone); break;
         default: SetDigits(kI);
     }
 }
 
 void Validator::UpdateForX() {
-    switch (preDigit_) {
+    switch (number_.preDigit()) {
         case 'I': SetDigits(kNone); break;
         case 'X':
-            if (prePreDigit_ == 'X')
+            if (number_.prePreDigit() == 'X')
                 SetDigits(kIV);
             else
                 SetDigits(kIVX);
@@ -69,7 +60,7 @@ void Validator::UpdateForX() {
 
 void Validator::UpdateForL()
 {
-    switch (preDigit_) {
+    switch (number_.preDigit()) {
         case 'X': SetDigits(kIV); break;
         default: SetDigits(kIVX);
     }
@@ -77,10 +68,10 @@ void Validator::UpdateForL()
 
 void Validator::UpdateForC()
 {
-    switch (preDigit_) {
+    switch (number_.preDigit()) {
         case 'X': SetDigits(kIV); break;
         case 'C':
-            if (prePreDigit_ == 'C')
+            if (number_.prePreDigit() == 'C')
                 SetDigits(kIVXL);
             else
                 SetDigits(kIVXLC);
@@ -92,7 +83,7 @@ void Validator::UpdateForC()
 
 void Validator::UpdateForD()
 {
-    switch (preDigit_) {
+    switch (number_.preDigit()) {
         case 'C': SetDigits(kIVXL); break;
         default: SetDigits(kIVXLC);
     }
@@ -100,10 +91,10 @@ void Validator::UpdateForD()
 
 void Validator::UpdateForM()
 {
-    switch (preDigit_) {
+    switch (number_.preDigit()) {
         case 'C': SetDigits(kIVXL); break;
         case 'M':
-            if (prePreDigit_ == 'M')
+            if (number_.prePreDigit() == 'M')
                 SetDigits(kIVXLCD);
             else
                 SetDigits(kIVXLCDM);
@@ -114,7 +105,7 @@ void Validator::UpdateForM()
 
 void Validator::Update(char currentDigit) {
     switch (currentDigit) {
-        case 'I': UpdateForI(); break;
+        case 'I': SetDigits(number_.AllowedDigits()); break;
         case 'V': UpdateForV(); break;
         case 'X': UpdateForX(); break;
         case 'L': UpdateForL(); break;
@@ -122,8 +113,7 @@ void Validator::Update(char currentDigit) {
         case 'D': UpdateForD(); break;
         case 'M': UpdateForM(); break;
     }
-    prePreDigit_ = preDigit_;
-    preDigit_ = currentDigit;
+    number_.Append(currentDigit);
 }
 
 bool Validator::Check(char currentDigit) const {

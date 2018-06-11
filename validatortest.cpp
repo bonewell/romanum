@@ -148,3 +148,29 @@ TEST_F(ValidatorTest, ADigitAfterLXShouldNotBeLOrC) {
 TEST_F(ValidatorTest, ADigitAfterXCShouldNotBeX) {
     ASSERT_FALSE(validator.Validate("XCX"));
 }
+
+TEST_F(ValidatorTest, ADigitAfterCCShouldNotBeDOrM) {
+    ASSERT_FALSE(validator.Validate("CCD"));
+    ASSERT_FALSE(validator.Validate("CCM"));
+}
+
+TEST_F(ValidatorTest, ADigitsAfterCCCShoudNotBeC) {
+    ASSERT_FALSE(validator.Validate("CCCC"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterCDShouldNotBeC) {
+    ASSERT_FALSE(validator.Validate("CDC"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterDCShouldNotBeDOrM) {
+    ASSERT_FALSE(validator.Validate("DCD"));
+    ASSERT_FALSE(validator.Validate("DCM"));
+}
+
+TEST_F(ValidatorTest, ADigitAfterCMShouldNotBeC) {
+    ASSERT_FALSE(validator.Validate("CMC"));
+}
+
+TEST_F(ValidatorTest, ADigitsAfterMMMShoudNotBeM) {
+    ASSERT_FALSE(validator.Validate("MMMM"));
+}

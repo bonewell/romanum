@@ -23,6 +23,8 @@ private:
     void UpdateForX();
     void UpdateForL();
     void UpdateForC();
+    void UpdateForD();
+    void UpdateForM();
     bool Check(char currentDigit) const;
 };
 

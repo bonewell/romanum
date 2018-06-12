@@ -31,6 +31,9 @@ std::string RomanNumber::AllowedDigits(char currentDigit) const
         case 'I': return UpdateForI();
         case 'V': return UpdateForV();
         case 'X': return UpdateForX();
+        case 'L': return UpdateForL();
+        case 'C': return UpdateForC();
+
     }
 }
 
@@ -67,5 +70,28 @@ std::string RomanNumber::UpdateForX() const
         break;
         case 'L': return kIVX;
         default: return kIVXLC;
+    }
+}
+
+std::string RomanNumber::UpdateForL() const
+{
+    switch (preDigit_) {
+        case 'X': return kIV;
+        default: return kIVX;
+    }
+}
+
+std::string RomanNumber::UpdateForC() const
+{
+    switch (preDigit_) {
+        case 'X': return kIV;
+        case 'C':
+            if (prePreDigit_ == 'C')
+                return kIVXL;
+            else
+                return kIVXLC;
+        break;
+        case 'D': return kIVXLC;
+        default: return kIVXLCDM;
     }
 }

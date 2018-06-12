@@ -20,6 +20,8 @@ private:
     std::string UpdateForI() const;
     std::string UpdateForV() const;
     std::string UpdateForX() const;
+    std::string UpdateForL() const;
+    std::string UpdateForC() const;
 
     std::string value_;
     char preDigit_;

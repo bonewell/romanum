@@ -22,8 +22,6 @@ private:
     void SetDigits(const std::string& digits);
     void Reset();
     void Update(char currentDigit);
-    void UpdateForL();
-    void UpdateForC();
     void UpdateForD();
     void UpdateForM();
     bool Check(char currentDigit) const;

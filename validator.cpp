@@ -37,29 +37,6 @@ void Validator::Reset() {
     number_ = RomanNumber();
 }
 
-void Validator::UpdateForL()
-{
-    switch (number_.preDigit()) {
-        case 'X': SetDigits(kIV); break;
-        default: SetDigits(kIVX);
-    }
-}
-
-void Validator::UpdateForC()
-{
-    switch (number_.preDigit()) {
-        case 'X': SetDigits(kIV); break;
-        case 'C':
-            if (number_.prePreDigit() == 'C')
-                SetDigits(kIVXL);
-            else
-                SetDigits(kIVXLC);
-        break;
-        case 'D': SetDigits(kIVXLC); break;
-        default: SetDigits(kIVXLCDM); break;
-    }
-}
-
 void Validator::UpdateForD()
 {
     switch (number_.preDigit()) {
@@ -87,8 +64,8 @@ void Validator::Update(char currentDigit) {
         case 'I': SetDigits(number_.AllowedDigits(currentDigit)); break;
         case 'V': SetDigits(number_.AllowedDigits(currentDigit)); break;
         case 'X': SetDigits(number_.AllowedDigits(currentDigit)); break;
-        case 'L': UpdateForL(); break;
-        case 'C': UpdateForC(); break;
+        case 'L': SetDigits(number_.AllowedDigits(currentDigit)); break;
+        case 'C': SetDigits(number_.AllowedDigits(currentDigit)); break;
         case 'D': UpdateForD(); break;
         case 'M': UpdateForM(); break;
     }

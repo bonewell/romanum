@@ -14,17 +14,13 @@ public:
     bool Validate(const std::string& value);
 
 private:
-    RomanNumber number_;
-    std::vector<char> digits_;
-
-    template<size_t N>
-    void SetDigits(const std::array<char, N>& digits);
     void SetDigits(const std::string& digits);
     void Reset();
     void Update(char currentDigit);
-    void UpdateForD();
-    void UpdateForM();
     bool Check(char currentDigit) const;
+
+    RomanNumber number_;
+    std::vector<char> digits_;
 };
 
 #endif // VALIDATOR_H

@@ -14,7 +14,8 @@ namespace {
 RomanNumber::RomanNumber()
     : value_(),
       preDigit_(0),
-      prePreDigit_(0)
+      prePreDigit_(0),
+      currentDigit_(0)
 {
 
 }
@@ -22,12 +23,13 @@ RomanNumber::RomanNumber()
 void RomanNumber::Append(char digit)
 {
     prePreDigit_ = preDigit_;
-    preDigit_ = digit;
+    preDigit_ = currentDigit_;
+    currentDigit_ = digit;
 }
 
-std::string RomanNumber::AllowedDigits(char currentDigit) const
+std::string RomanNumber::AllowedDigits() const
 {
-    switch (currentDigit) {
+    switch (currentDigit_) {
         case 'I': return UpdateForI();
         case 'V': return UpdateForV();
         case 'X': return UpdateForX();

@@ -8,7 +8,7 @@ class RomanNumber
 public:
     RomanNumber();
     void Append(char digit);
-    std::string AllowedDigits() const;
+    std::string AllowedDigits(char currentDigit) const;
     char preDigit() const {
         return preDigit_;
     }
@@ -18,6 +18,7 @@ public:
 
 private:
     std::string UpdateForI() const;
+    std::string UpdateForV() const;
 
     std::string value_;
     char preDigit_;

@@ -8,7 +8,7 @@ namespace {
   const std::string kIVX = "IVX";
   const std::string kIV = "IV";
   const std::string kI = "I";
-  const std::string kNone;
+  const std::string kNone = "";
 }
 
 RomanNumber::RomanNumber()
@@ -25,9 +25,12 @@ void RomanNumber::Append(char digit)
     preDigit_ = digit;
 }
 
-std::string RomanNumber::AllowedDigits() const
+std::string RomanNumber::AllowedDigits(char currentDigit) const
 {
-    return UpdateForI();
+    switch (currentDigit) {
+        case 'I': return UpdateForI();
+        case 'V': return UpdateForV();
+    }
 }
 
 std::string RomanNumber::UpdateForI() const {
@@ -40,5 +43,13 @@ std::string RomanNumber::UpdateForI() const {
                 return kI;
         break;
         default: return kIVX;
+    }
+}
+
+std::string RomanNumber::UpdateForV() const
+{
+    switch (preDigit_) {
+        case 'I': return kNone;
+        default: return kI;
     }
 }

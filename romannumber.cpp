@@ -30,6 +30,7 @@ std::string RomanNumber::AllowedDigits(char currentDigit) const
     switch (currentDigit) {
         case 'I': return UpdateForI();
         case 'V': return UpdateForV();
+        case 'X': return UpdateForX();
     }
 }
 
@@ -51,5 +52,20 @@ std::string RomanNumber::UpdateForV() const
     switch (preDigit_) {
         case 'I': return kNone;
         default: return kI;
+    }
+}
+
+std::string RomanNumber::UpdateForX() const
+{
+    switch (preDigit_) {
+        case 'I': return kNone;
+        case 'X':
+            if (prePreDigit_ == 'X')
+                return kIV;
+            else
+                return kIVX;
+        break;
+        case 'L': return kIVX;
+        default: return kIVXLC;
     }
 }

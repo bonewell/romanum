@@ -30,6 +30,11 @@ namespace {
       size_t len = kDigits.length();
       return pos == len - 1 ? -1 : kDigits[pos + 1];
   }
+
+  bool Is5(char digit) {
+      size_t pos = kDigits.find(digit);
+      return (pos + 1) % 2 == 0;
+  }
 }
 
 RomanNumber::RomanNumber()
@@ -58,16 +63,10 @@ const std::string& RomanNumber::AllowedDigits() const
 }
 
 std::string RomanNumber::Update() {
-    switch (currentDigit_) {
-        case 'I':
-        case 'X':
-        case 'C':
-        case 'M': return Update1();
-        case 'V':
-        case 'L':
-        case 'D': return Update5();
-        default: return kDigits;
+    if (Is5(currentDigit_)) {
+        return Update5();
     }
+    return Update1();
 }
 
 std::string RomanNumber::Update5() const

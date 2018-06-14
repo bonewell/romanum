@@ -1,25 +1,40 @@
 #include "romannumber.h"
 
 namespace {
-  const std::string kIVXLCDM = "IVXLCDM";
-  const std::string kIVXLCD = "IVXLCD";
-  const std::string kIVXLC = "IVXLC";
-  const std::string kIVXL = "IVXL";
-  const std::string kIVX = "IVX";
-  const std::string kIV = "IV";
-  const std::string kI = "I";
-  const std::string kNone = "";
+  const std::string kDigits = "IVXLCDM";
+
+  std::string SliceStrictly(char digit) {
+      size_t pos = kDigits.find(digit);
+      return kDigits.substr(0, pos);
+  }
 
   std::string Slice(char digit) {
-      size_t pos = kIVXLCDM.find(digit);
-      // throw exception: digit is not supported if pos == npos
-      return kIVXLCDM.substr(0, pos);
+      size_t pos = kDigits.find(digit);
+      return kDigits.substr(0, pos + 1);
+  }
+
+  char Shift10(char digit) {
+      size_t pos = kDigits.find(digit);
+      size_t len = kDigits.length();
+      return kDigits[std::min(pos + 2, len - 1)];
+  }
+
+  char Before(char digit) {
+      if (digit == -1) return -1;
+      size_t pos = kDigits.find(digit);
+      return pos == 0 ? -1 : kDigits[pos - 1];
+  }
+
+  char After(char digit) {
+      size_t pos = kDigits.find(digit);
+      size_t len = kDigits.length();
+      return pos == len - 1 ? -1 : kDigits[pos + 1];
   }
 }
 
 RomanNumber::RomanNumber()
     : value_(),
-      digits_(kIVXLCDM),
+      digits_(kDigits),
       preDigit_(0),
       prePreDigit_(0),
       currentDigit_(0)
@@ -32,7 +47,9 @@ void RomanNumber::Append(char digit)
     prePreDigit_ = preDigit_;
     preDigit_ = currentDigit_;
     currentDigit_ = digit;
+    // TODO: check that digit is valid simbol
     digits_ = Update();
+    value_ += digit;
 }
 
 const std::string& RomanNumber::AllowedDigits() const
@@ -42,55 +59,30 @@ const std::string& RomanNumber::AllowedDigits() const
 
 std::string RomanNumber::Update() {
     switch (currentDigit_) {
-        case 'I': return UpdateForI();
-        case 'X': return UpdateForX();
-        case 'C': return UpdateForC();
-        case 'M': return UpdateForM();
+        case 'I':
+        case 'X':
+        case 'C':
+        case 'M': return Update1();
         case 'V':
         case 'L':
         case 'D': return Update5();
-        default: return kIVXLCDM;
+        default: return kDigits;
     }
 }
 
 std::string RomanNumber::Update5() const
 {
-    return Slice(preDigit_ == 0 ? currentDigit_ : preDigit_);
+    return SliceStrictly(preDigit_ == 0 ? currentDigit_ : preDigit_);
 }
 
-std::string RomanNumber::UpdateForI() const {
-    switch (preDigit_) {
-        case 'I':
-        case 'V': return (prePreDigit_ == 'I') ? kNone : kI;
-        default: return kIVX;
-    }
-}
-
-std::string RomanNumber::UpdateForX() const
+std::string RomanNumber::Update1() const
 {
-    switch (preDigit_) {
-        case 'I': return kNone;
-        case 'X': return (prePreDigit_ == 'X') ? kIV : kIVX;
-        case 'L': return kIVX;
-        default: return kIVXLC;
+    if (currentDigit_ == preDigit_) {
+        return (currentDigit_ == prePreDigit_) ? SliceStrictly(preDigit_) : Slice(preDigit_);
     }
-}
 
-std::string RomanNumber::UpdateForC() const
-{
-    switch (preDigit_) {
-        case 'X': return kIV;
-        case 'C': return (prePreDigit_ == 'C') ? kIVXL : kIVXLC;
-        case 'D': return kIVXLC;
-        default: return kIVXLCDM;
-    }
-}
+    if (preDigit_ == Before(Before(currentDigit_)) || preDigit_ == After(currentDigit_))
+        return SliceStrictly(preDigit_);
 
-std::string RomanNumber::UpdateForM() const
-{
-    switch (preDigit_) {
-        case 'C': return kIVXL;
-        case 'M': return (prePreDigit_ == 'M') ? kIVXLCD : kIVXLCDM;
-        default: return kIVXLCDM;
-    }
+    return Slice(Shift10(currentDigit_));
 }

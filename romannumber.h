@@ -12,11 +12,8 @@ public:
 
 private:
     std::string Update();
+    std::string Update1() const;
     std::string Update5() const;
-    std::string UpdateForI() const;
-    std::string UpdateForX() const;
-    std::string UpdateForC() const;
-    std::string UpdateForM() const;
 
     std::string value_;
     std::string digits_;

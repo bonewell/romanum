@@ -1,21 +1,15 @@
 cmake_minimum_required(VERSION 3.5)
-project(ValidatorTest)
+project(Romanum)
 set(CXX_STANDARD 17)
 
-set(GTEST_ROOT /home/bone/git/googletest/build/bin)
+add_library(${PROJECT_NAME}
+    romannumber.cpp
+    validator.cpp
+)
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
+set(GTEST_ROOT /home/bone/git/googletest/build/bin)
 enable_testing()
 find_package(GTest REQUIRED)
 
-add_executable(${PROJECT_NAME}
-    romannumber.cpp
-    validator.cpp
-    validatortest.cpp
-)
-
-target_link_libraries(${PROJECT_NAME}
-    GTest::GTest
-    GTest::Main
-)
-
-add_test(${PROJECT_NAME} ${PROJECT_NAME})
+add_subdirectory(tests)

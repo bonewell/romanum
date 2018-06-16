@@ -26,6 +26,10 @@ private:
 
     std::string value_;
     std::string digits_;
+
+    friend std::ostream& operator<<(std::ostream& out, const RomanNumber& number);
 };
+
+std::ostream& operator<<(std::ostream& out, const RomanNumber& number);
 
 #endif // ROMANNUMBER_H

@@ -174,3 +174,8 @@ TEST_F(ValidatorTest, ADigitAfterCMShouldNotBeC) {
 TEST_F(ValidatorTest, ADigitsAfterMMMShoudNotBeM) {
     ASSERT_FALSE(validator.Validate("MMMM"));
 }
+
+TEST_F(ValidatorTest, ADigitAfterXLVShouldNotBeVOrX) {
+    ASSERT_FALSE(validator.Validate("LVV"));
+    ASSERT_FALSE(validator.Validate("LVX"));
+}

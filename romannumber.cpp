@@ -64,7 +64,7 @@ void RomanNumber::UpdateAllowedDigits() {
 
 std::string RomanNumber::GetAllowedForSingleUse() const
 {
-    return IsPreviousPresented() ?
+    return Previous() == ShiftBack(Current()) ?
                 SliceStrictly(Previous()) :
                 SliceStrictly(Current());
 }
@@ -117,4 +117,9 @@ std::string RomanNumber::GetAllowed() const
         return SliceStrictly(Previous());
 
     return Slice(Shift(Shift(Current())));
+}
+
+std::ostream& operator<<(std::ostream& out, const RomanNumber& number)
+{
+    return out << number.value_;
 }

@@ -8,6 +8,14 @@ add_library(${PROJECT_NAME}
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
+add_executable(${PROJECT_NAME}Cmd
+    main.cpp
+)
+target_include_directories(${PROJECT_NAME}Cmd PRIVATE
+    ${CMAKE_SOURCE_DIR}
+)
+target_link_libraries(${PROJECT_NAME}Cmd Romanum::Romanum)
+
 set(GTEST_ROOT /home/bone/git/googletest/build/bin)
 enable_testing()
 find_package(GTest REQUIRED)

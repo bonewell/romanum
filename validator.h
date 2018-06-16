@@ -3,8 +3,6 @@
 
 #include "romannumber.h"
 
-class RomanNumber;
-
 class Validator {
 public:
     bool Validate(const std::string& value);

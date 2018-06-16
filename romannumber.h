@@ -11,15 +11,21 @@ public:
     const std::string& AllowedDigits() const;
 
 private:
-    std::string Update();
-    std::string Update1() const;
-    std::string Update5() const;
+    void Concatenate(char digit);
+    void UpdateAllowedDigits();
+    std::string GetAllowed() const;
+    std::string GetAllowedForSingleUse() const;
+
+    char Current() const;
+    char Previous() const;
+    char BeforePrevious() const;
+
+    bool IsPreviousPresented() const;
+    bool IsDouble() const;
+    bool IsTriple() const;
 
     std::string value_;
     std::string digits_;
-    char preDigit_;
-    char prePreDigit_;
-    char currentDigit_;
 };
 
 #endif // ROMANNUMBER_H

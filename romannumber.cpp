@@ -1,7 +1,14 @@
 #include "romannumber.h"
 
+#include <stdexcept>
+
 namespace {
   const std::string kDigits = "IVXLCDM";
+
+  void IsRoman(char digit) {
+      if (kDigits.find(digit) == kDigits.npos)
+          throw std::invalid_argument("Digit is not roman digit");
+  }
 
   std::string SliceStrictly(char digit) {
       size_t pos = kDigits.find(digit);
@@ -13,48 +20,30 @@ namespace {
       return kDigits.substr(0, pos + 1);
   }
 
-  char Shift10(char digit) {
+  char ShiftBack(char digit) {
+      size_t pos = kDigits.find(digit);
+      return pos == 0 ? kDigits.front() : kDigits[pos - 1];
+  }
+
+  char Shift(char digit) {
       size_t pos = kDigits.find(digit);
       size_t len = kDigits.length();
-      return kDigits[std::min(pos + 2, len - 1)];
+      return pos == len - 1 ? kDigits.back() : kDigits[pos + 1];
   }
 
-  char Before(char digit) {
-      if (digit == -1) return -1;
-      size_t pos = kDigits.find(digit);
-      return pos == 0 ? -1 : kDigits[pos - 1];
-  }
-
-  char After(char digit) {
-      size_t pos = kDigits.find(digit);
-      size_t len = kDigits.length();
-      return pos == len - 1 ? -1 : kDigits[pos + 1];
-  }
-
-  bool Is5(char digit) {
+  bool IsSingleUse(char digit) {
       size_t pos = kDigits.find(digit);
       return (pos + 1) % 2 == 0;
   }
 }
 
-RomanNumber::RomanNumber()
-    : value_(),
-      digits_(kDigits),
-      preDigit_(0),
-      prePreDigit_(0),
-      currentDigit_(0)
-{
-
-}
+RomanNumber::RomanNumber() : value_(), digits_(kDigits) {}
 
 void RomanNumber::Append(char digit)
 {
-    prePreDigit_ = preDigit_;
-    preDigit_ = currentDigit_;
-    currentDigit_ = digit;
-    // TODO: check that digit is valid simbol
-    digits_ = Update();
-    value_ += digit;
+    IsRoman(digit);
+    Concatenate(digit);
+    UpdateAllowedDigits();
 }
 
 const std::string& RomanNumber::AllowedDigits() const
@@ -62,26 +51,70 @@ const std::string& RomanNumber::AllowedDigits() const
     return digits_;
 }
 
-std::string RomanNumber::Update() {
-    if (Is5(currentDigit_)) {
-        return Update5();
-    }
-    return Update1();
+void RomanNumber::Concatenate(char digit)
+{
+    value_ += digit;
 }
 
-std::string RomanNumber::Update5() const
-{
-    return SliceStrictly(preDigit_ == 0 ? currentDigit_ : preDigit_);
+void RomanNumber::UpdateAllowedDigits() {
+    digits_ = IsSingleUse(Current()) ?
+                GetAllowedForSingleUse() :
+                GetAllowed();
 }
 
-std::string RomanNumber::Update1() const
+std::string RomanNumber::GetAllowedForSingleUse() const
 {
-    if (currentDigit_ == preDigit_) {
-        return (currentDigit_ == prePreDigit_) ? SliceStrictly(preDigit_) : Slice(preDigit_);
+    return IsPreviousPresented() ?
+                SliceStrictly(Previous()) :
+                SliceStrictly(Current());
+}
+
+char RomanNumber::Current() const
+{
+    return *std::crbegin(value_);
+}
+
+char RomanNumber::Previous() const
+{
+    const int kOffset = 1;
+    if (value_.length() > kOffset) {
+        return *(std::crbegin(value_) + kOffset);
     }
+    return 0;
+}
 
-    if (preDigit_ == Before(Before(currentDigit_)) || preDigit_ == After(currentDigit_))
-        return SliceStrictly(preDigit_);
+char RomanNumber::BeforePrevious() const
+{
+    const int kOffset = 2;
+    if (value_.length() > kOffset) {
+        return *(std::crbegin(value_) + kOffset);
+    }
+    return 0;
+}
 
-    return Slice(Shift10(currentDigit_));
+bool RomanNumber::IsPreviousPresented() const
+{
+    return Previous() != 0;
+}
+
+bool RomanNumber::IsDouble() const
+{
+    return Current() == Previous() && Current() != BeforePrevious();
+}
+
+bool RomanNumber::IsTriple() const
+{
+    return Current() == Previous() && Current() == BeforePrevious();
+}
+
+std::string RomanNumber::GetAllowed() const
+{
+    if (IsDouble()) return Slice(Current());
+    if (IsTriple()) return SliceStrictly(Current());
+    if (Previous() == Shift(Current())) return Slice(Current());
+
+    if (Previous() == ShiftBack(ShiftBack(Current())))
+        return SliceStrictly(Previous());
+
+    return Slice(Shift(Shift(Current())));
 }

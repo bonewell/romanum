@@ -41,7 +41,7 @@ RomanNumber::RomanNumber() : value_(), digits_(kDigits) {}
 
 void RomanNumber::Append(char digit)
 {
-    IsRoman(digit);
+    IsAllowed(digit);
     Concatenate(digit);
     UpdateAllowedDigits();
 }
@@ -92,11 +92,6 @@ char RomanNumber::BeforePrevious() const
     return 0;
 }
 
-bool RomanNumber::IsPreviousPresented() const
-{
-    return Previous() != 0;
-}
-
 bool RomanNumber::IsDouble() const
 {
     return Current() == Previous() && Current() != BeforePrevious();
@@ -105,6 +100,12 @@ bool RomanNumber::IsDouble() const
 bool RomanNumber::IsTriple() const
 {
     return Current() == Previous() && Current() == BeforePrevious();
+}
+
+bool RomanNumber::IsAllowed(char digit) const
+{
+    if (digits_.find(digit) == digits_.npos)
+        throw std::invalid_argument("Digit is not allowed");
 }
 
 std::string RomanNumber::GetAllowed() const

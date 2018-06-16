@@ -1,8 +1,16 @@
 #include <iostream>
 
 #include <romannumber.h>
+#include <validator.h>
 
-int main() {
+int main(int argc, char* args[]) {
+    if (argc > 1) {
+        Validator validator;
+        bool res = validator.Validate(args[1]);
+        std::cout << "Roman number is " << std::boolalpha << res << std::endl;
+        return 0;
+    }
+
     char digit;
     RomanNumber number;
     const auto& allowed = number.AllowedDigits();

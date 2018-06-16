@@ -20,9 +20,9 @@ private:
     char Previous() const;
     char BeforePrevious() const;
 
-    bool IsPreviousPresented() const;
     bool IsDouble() const;
     bool IsTriple() const;
+    bool IsAllowed(char digit) const;
 
     std::string value_;
     std::string digits_;

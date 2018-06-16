@@ -5,8 +5,7 @@
 
 int main(int argc, char* args[]) {
     if (argc > 1) {
-        Validator validator;
-        bool res = validator.Validate(args[1]);
+        bool res = Validator().Validate(args[1]);
         std::cout << "Roman number is " << std::boolalpha << res << std::endl;
         return 0;
     }

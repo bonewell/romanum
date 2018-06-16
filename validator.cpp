@@ -1,20 +1,18 @@
 #include "validator.h"
 
-#include <algorithm>
+#include <iostream>
+#include <stdexcept>
+
+#include "romannumber.h"
 
 bool Validator::Validate(const std::string& value)
 {
     if (value.empty()) return false;
-    number_ = RomanNumber();
-    for (auto digit: value) {
-        if (!Check(digit)) return false;
-        number_.Append(digit);
+    try {
+        RomanNumber number;
+        for (auto digit: value) number.Append(digit);
+        return true;
+    } catch (const std::invalid_argument&) {
+        return false;
     }
-    return true;
-}
-
-bool Validator::Check(char digit) const
-{
-    const auto& digits = number_.AllowedDigits();
-    return digits.find(digit) != digits.npos;
 }

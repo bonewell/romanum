@@ -2,6 +2,7 @@ set(TEST_SUITE ${PROJECT_NAME}Test)
 
 add_executable(${TEST_SUITE}
     validatortest.cpp
+    convertertest.cpp
 )
 
 target_include_directories(${TEST_SUITE} PRIVATE

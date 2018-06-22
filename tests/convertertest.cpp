@@ -1,43 +1,31 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
 
-#include <unordered_map>
+#include "converter.h"
 
 using namespace ::testing;
 
-short Convert(const std::string& value)
+class ConverterTest: public Test
 {
-    const std::unordered_map<char, short> digits = {
-        {'I', 1}, {'V', 5}, {'X', 10}, {'L', 50},
-        {'C', 100}, {'D', 500}, {'M', 1000}
-    };
-    short sum = 0;
-    short previous = 0;
-    for (auto digit: value) {
-        short current = digits.at(digit);
-        sum += current;
-        if (previous < current)
-            sum -= 2 * previous;
-        previous = current;
-    }
-    return sum;
+public:
+    Converter converter;
+};
+
+TEST_F(ConverterTest, ConvertOneDigit) {
+    ASSERT_THAT(converter.Convert("I"), Eq(1));
+    ASSERT_THAT(converter.Convert("V"), Eq(5));
+    ASSERT_THAT(converter.Convert("X"), Eq(10));
+    ASSERT_THAT(converter.Convert("L"), Eq(50));
+    ASSERT_THAT(converter.Convert("C"), Eq(100));
+    ASSERT_THAT(converter.Convert("D"), Eq(500));
+    ASSERT_THAT(converter.Convert("M"), Eq(1000));
 }
 
-TEST(ConverterTest, ConvertOneDigit) {
-    ASSERT_THAT(Convert("I"), Eq(1));
-    ASSERT_THAT(Convert("V"), Eq(5));
-    ASSERT_THAT(Convert("X"), Eq(10));
-    ASSERT_THAT(Convert("L"), Eq(50));
-    ASSERT_THAT(Convert("C"), Eq(100));
-    ASSERT_THAT(Convert("D"), Eq(500));
-    ASSERT_THAT(Convert("M"), Eq(1000));
+TEST_F(ConverterTest, ConvertFewDigits) {
+    ASSERT_THAT(converter.Convert("XVI"), Eq(16));
 }
 
-TEST(ConverterTest, ConvertFewDigits) {
-    ASSERT_THAT(Convert("XVI"), Eq(16));
-}
-
-TEST(ConverterTest, MinusIfCurrentBiggerPrevious) {
-    ASSERT_THAT(Convert("XIV"), Eq(14));
-    ASSERT_THAT(Convert("MCMXCIX"), Eq(1999));
+TEST_F(ConverterTest, MinusIfCurrentBiggerPrevious) {
+    ASSERT_THAT(converter.Convert("XIV"), Eq(14));
+    ASSERT_THAT(converter.Convert("MCMXCIX"), Eq(1999));
 }

@@ -5,6 +5,7 @@ set(CXX_STANDARD 17)
 add_library(${PROJECT_NAME}
     romannumber.cpp
     validator.cpp
+    converter.cpp
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 

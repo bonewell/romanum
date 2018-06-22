@@ -12,8 +12,13 @@ short Convert(const std::string& value)
         {'C', 100}, {'D', 500}, {'M', 1000}
     };
     short sum = 0;
+    short previous = 0;
     for (auto digit: value) {
-        sum += digits.at(digit);
+        short current = digits.at(digit);
+        sum += current;
+        if (previous < current)
+            sum -= 2 * previous;
+        previous = current;
     }
     return sum;
 }
@@ -29,5 +34,10 @@ TEST(ConverterTest, ConvertOneDigit) {
 }
 
 TEST(ConverterTest, ConvertFewDigits) {
-    ASSERT_THAT(Convert("XVI"), 16);
+    ASSERT_THAT(Convert("XVI"), Eq(16));
+}
+
+TEST(ConverterTest, MinusIfCurrentBiggerPrevious) {
+    ASSERT_THAT(Convert("XIV"), Eq(14));
+    ASSERT_THAT(Convert("MCMXCIX"), Eq(1999));
 }

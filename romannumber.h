@@ -9,6 +9,7 @@ public:
     RomanNumber();
     void Append(char digit);
     const std::string& AllowedDigits() const;
+    operator std::string() const;
 
 private:
     void Concatenate(char digit);

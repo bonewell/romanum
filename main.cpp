@@ -2,6 +2,7 @@
 
 #include <romannumber.h>
 #include <validator.h>
+#include <converter.h>
 
 int main(int argc, char* args[]) {
     if (argc > 1) {
@@ -17,7 +18,9 @@ int main(int argc, char* args[]) {
         std::cout << "Input roman digit (" + allowed + "): ";
         std::cin >> digit;
         number.Append(digit);
-        std::cout << "Number: " << number << std::endl;
+        short value = Converter().Convert(number);
+        std::cout << "Number: " << number;
+        std::cout << "(" << value << ")\n";
     }
     std::cout << "Finished\n";
 

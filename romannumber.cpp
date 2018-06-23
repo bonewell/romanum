@@ -51,6 +51,11 @@ const std::string& RomanNumber::AllowedDigits() const
     return digits_;
 }
 
+RomanNumber::operator std::string() const
+{
+    return value_;
+}
+
 void RomanNumber::Concatenate(char digit)
 {
     value_ += digit;

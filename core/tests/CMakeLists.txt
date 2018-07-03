@@ -7,12 +7,13 @@ add_executable(${TestSuite}
 
 target_include_directories(${TestSuite} PRIVATE
     ${CMAKE_SOURCE_DIR}/core
+    ${gmock_SOURCE_DIR}/include
 )
 
 target_link_libraries(${TestSuite}
     ${PROJECT_NAME}::${CompanentName}
-    GTest::GTest
-    GTest::Main
+    gtest
+    gtest_main
 )
 
 add_test(${TestSuite} ${TestSuite})

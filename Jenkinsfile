@@ -9,7 +9,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh 'GTEST_OUTPUT="xml:report.xml" cd build && ctest'
+        sh 'cd build && GTEST_OUTPUT="xml:report.xml" ctest'
         junit 'reports/**'
       }
     }

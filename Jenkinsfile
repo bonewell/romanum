@@ -9,7 +9,8 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh 'cd build && make test'
+        sh 'GTEST_OUTPUT="xml:report.xml" cd build && ctest'
+        junit 'reports/**'
       }
     }
   }

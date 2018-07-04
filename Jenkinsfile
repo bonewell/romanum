@@ -10,7 +10,7 @@ pipeline {
     stage('Test') {
       steps {
         sh 'cd build && GTEST_OUTPUT="xml:report.xml" ctest'
-        junit 'reports/**'
+        junit '**'
       }
     }
   }

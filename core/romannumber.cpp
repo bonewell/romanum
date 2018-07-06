@@ -107,7 +107,7 @@ bool RomanNumber::IsTriple() const
     return Current() == Previous() && Current() == BeforePrevious();
 }
 
-bool RomanNumber::IsAllowed(char digit) const
+void RomanNumber::IsAllowed(char digit) const
 {
     if (digits_.find(digit) == digits_.npos)
         throw std::invalid_argument("Digit is not allowed");

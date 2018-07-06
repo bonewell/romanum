@@ -3,6 +3,28 @@
 
 #include <string>
 
+/**
+ * @startuml
+ * class RomanNumber {
+ *   - value_ : string
+ * 	 - digits_ : string
+ * 	 + RomanNumber()
+ * 	 + Append(digit : char) : void
+ * 	 + AllowedDigits() const : const string&
+ * 	 + operator string() const
+ * 	 - Concatenate(digit : char) : void
+ *   - UpdateAllowedDigits() : void
+ *   - GetAllowed() const : string
+ *   - GetAllowedForSingleUse() const : string
+ *   - Current() const : char
+ *   - Previous() const : char
+ *   - BeforePrevious() const : char
+ *   - IsDouble() const : bool
+ *   - IsTriple() const : bool
+ *   - IsAllowed(digit : char) const : void
+ * }
+ * @enduml
+ */
 class RomanNumber
 {
 public:
@@ -23,7 +45,7 @@ private:
 
     bool IsDouble() const;
     bool IsTriple() const;
-    bool IsAllowed(char digit) const;
+    void IsAllowed(char digit) const;
 
     std::string value_;
     std::string digits_;

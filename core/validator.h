@@ -4,11 +4,11 @@
 #include <string>
 
 /**
-* @startuml
-* Validator : + Validate(value : string) : bool
-* Validator ..> RomanNumber
-* RomanNumber : + Append(digit : char) : void
-* @enduml
+ * @startuml
+ * Validator : + Validate(value : string) : bool
+ * Validator ..> RomanNumber
+ * RomanNumber : + Append(digit : char) : void
+ * @enduml
  */
 class Validator {
 public:

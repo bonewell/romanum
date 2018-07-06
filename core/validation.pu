@@ -4,11 +4,11 @@ activate Validator
 Validator -> RomanNumber : << create >>
 activate RomanNumber
 loop
-	Validator -> RomanNumber : Append(digit)
-	opt digit is not allowed
-		Validator <-- RomanNumber : throw invalid_argument
-		[<-- Validator : false
-	end
+    Validator -> RomanNumber : Append(digit)
+    opt digit is not allowed
+        Validator <-- RomanNumber : throw invalid_argument
+        [<-- Validator : false
+    end
 end
 deactivate RomanNumber
 destroy RomanNumber

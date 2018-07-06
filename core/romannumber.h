@@ -7,12 +7,12 @@
  * @startuml
  * class RomanNumber {
  *   - value_ : string
- * 	 - digits_ : string
- * 	 + RomanNumber()
- * 	 + Append(digit : char) : void
- * 	 + AllowedDigits() const : const string&
- * 	 + operator string() const
- * 	 - Concatenate(digit : char) : void
+ *   - digits_ : string
+ *   + RomanNumber()
+ *   + Append(digit : char) : void
+ *   + AllowedDigits() const : const string&
+ *   + operator string() const
+ *   - Concatenate(digit : char) : void
  *   - UpdateAllowedDigits() : void
  *   - GetAllowed() const : string
  *   - GetAllowedForSingleUse() const : string

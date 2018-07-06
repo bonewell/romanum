@@ -8,12 +8,12 @@
 * class RomanNumber {
 *   - sum_ : short
 *   - previous_ : short
-* 	+ Append(digit : char) : void
-* 	- Reset() : void
-* 	- Add(value : short) : void
-* 	- Result() const : short
-* 	- IsPreviousLess(value : short) const : bool
-* 	- Amend() : void
+*   + Append(digit : char) : void
+*   - Reset() : void
+*   - Add(value : short) : void
+*   - Result() const : short
+*   - IsPreviousLess(value : short) const : bool
+*   - Amend() : void
 * }
 * @enduml
  */

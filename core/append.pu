@@ -1,0 +1,36 @@
+@startuml
+note left: `allowed` = IVXLCDM
+(*) --> "Append `digit`"
+if "Is `digit` \n usable just once?" then
+    [true] if "Does `previous` equal \n allowed digit from list \n front of `digit`?" then
+        --> [true] "Slice strictly \n by `previous` \n from `allowed`"
+        --> (*)
+    else
+        --> [false] "Slice strictly \n by `digit` \n from `allowed`"
+        --> (*)
+    endif
+else
+    [false] if "`digit` == `previous` and \n `digit` != the digit before `previous`" then
+        --> [true] "Slice \n by `digit` \n from `allowed`"
+        --> (*)
+    else
+        [false] if "`digit` == `previous` and \n `digit` == the digit before `previous`" then
+            --> [true] "Slice strictly \n by `digit` \n from `allowed`"
+            --> (*)
+        else
+            --> [false] if "`previous` == the next \n in `allowed` after `digit`" then
+                --> [true] "Slice \n by `digit` \n from `allowed`"
+                --> (*)
+            else
+                --> [false] if "`previous` == the digit before before `digit`" then
+                    --> [true] "Slice strictly \n by `previous` \n from `allowed`"
+                    --> (*)
+                else
+                    --> [false] "Slice \n by the digit before before `digit` \n from `allowed`"
+                    --> (*)
+                endif
+            endif
+        endif
+    endif
+endif
+@enduml

@@ -12,7 +12,7 @@
  */
 class Validator {
 public:
-    bool Validate(const std::string& value);
+    bool Validate(const std::string& value) const;
 };
 
 #endif // VALIDATOR_H

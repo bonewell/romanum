@@ -5,7 +5,7 @@
 
 #include "romannumber.h"
 
-bool Validator::Validate(const std::string& value)
+bool Validator::Validate(const std::string& value) const
 {
     if (value.empty()) return false;
     try {

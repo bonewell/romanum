@@ -13,5 +13,10 @@ pipeline {
         junit '**/report.xml'
       }
     }
+    stage('Build Qt GUI') {
+      steps {
+        sh 'mkdir -p build-qt-gui && cd build-qt-gui && qmake ../qt-gui && make'
+      }
+    }
   }
 }

@@ -6,5 +6,6 @@ add_library(${CompanentName}
     converter.cpp
 )
 add_library(${PROJECT_NAME}::${CompanentName} ALIAS ${CompanentName})
+target_compile_features(${CompanentName} PRIVATE cxx_std_17)
 
 add_subdirectory(tests)

@@ -1,6 +1,7 @@
 #include "romannumber.h"
 
 #include <stdexcept>
+#include <ostream>
 
 namespace {
   const std::string kDigits = "IVXLCDM";
